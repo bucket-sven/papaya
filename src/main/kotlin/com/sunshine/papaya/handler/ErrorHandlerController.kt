@@ -11,7 +11,6 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.servlet.ModelAndView
 import java.util.*
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -30,14 +29,14 @@ class ErrorHandlerController(dea: DefaultErrorAttributes) : AbstractErrorControl
     }
 
     @RequestMapping(ConstantUtil.ERROR_PATH)
-    fun error(request: HttpServletRequest, response: HttpServletResponse, map: ModelMap): ModelAndView {
+    fun error(request: HttpServletRequest, response: HttpServletResponse, map: ModelMap): String? {
         var model = Collections.unmodifiableMap(getErrorAttributes(request, false))
         var cause = getCause(request)
         var status = model["status"] as Int
         var message = model["message"] as String
         var errorMessage = "Internal Server Error"
         response.status = status
-        var view = ModelAndView("5xx")
+        var view = "5xx"
         if (!isJsonRequest(request)) {
             map.addAttribute("timestamp", Date())
             map.addAttribute("message", errorMessage)
@@ -67,9 +66,8 @@ class ErrorHandlerController(dea: DefaultErrorAttributes) : AbstractErrorControl
         var requestURI = request.getAttribute("javax.servlet.error.request_uri") as String?
         if (requestURI != null && requestURI.endsWith(".json")) {
             return true
-        } else {
-            return request.getHeader(HttpHeaders.ACCEPT).contains(MediaType.APPLICATION_JSON_VALUE)
         }
+        return request.getHeader(HttpHeaders.ACCEPT).contains(MediaType.APPLICATION_JSON_VALUE)
     }
 
     fun writeJson(response: HttpServletResponse, data: HashMap<String, Any>) {

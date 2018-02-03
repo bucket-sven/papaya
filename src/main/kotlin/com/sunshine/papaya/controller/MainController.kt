@@ -20,6 +20,7 @@ class MainController {
 //            session.setAttribute("key", "spring-boot")
 //        }
         map.addAttribute("data", "This is Data!!!")
+        map.addAttribute("key", "Test Layout!")
         return "index"
     }
 }
