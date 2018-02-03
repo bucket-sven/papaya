@@ -1,6 +1,9 @@
 package com.sunshine.papaya.controller
 
+import com.sunshine.papaya.dao.UserDAO
+import com.sunshine.papaya.service.UserService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,6 +13,9 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 class MainController {
     val logger = LoggerFactory.getLogger(MainController::class.java)
+
+    @Autowired
+    lateinit var userService: UserService
 
     @RequestMapping("/", method = [ RequestMethod.GET ])
     fun home(map: ModelMap, request: HttpServletRequest): String {

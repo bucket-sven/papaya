@@ -48,9 +48,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 //	compile('org.springframework.boot:spring-boot-starter-undertow')
+//	compile('com.alibaba:druid:1.0.31')
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
 	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('mysql:mysql-connector-java')
+	runtime('mysql:mysql-connector-java:6.0.5')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
