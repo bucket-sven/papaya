@@ -2,6 +2,7 @@ package com.sunshine.papaya.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.sunshine.papaya.util.ConstantUtil
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.servlet.ModelAndView
 import java.util.*
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -18,6 +20,7 @@ import kotlin.collections.HashMap
 
 @Controller
 class ErrorHandlerController(dea: DefaultErrorAttributes) : AbstractErrorController(dea) {
+    var logger = LoggerFactory.getLogger(ErrorHandlerController::class.java)
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
@@ -27,14 +30,14 @@ class ErrorHandlerController(dea: DefaultErrorAttributes) : AbstractErrorControl
     }
 
     @RequestMapping(ConstantUtil.ERROR_PATH)
-    fun error(request: HttpServletRequest, response: HttpServletResponse, map: ModelMap): String {
+    fun error(request: HttpServletRequest, response: HttpServletResponse, map: ModelMap): ModelAndView {
         var model = Collections.unmodifiableMap(getErrorAttributes(request, false))
         var cause = getCause(request)
         var status = model["status"] as Int
         var message = model["message"] as String
         var errorMessage = "Internal Server Error"
         response.status = status
-        var view = "5xx"
+        var view = ModelAndView("5xx")
         if (!isJsonRequest(request)) {
             map.addAttribute("timestamp", Date())
             map.addAttribute("message", errorMessage)
