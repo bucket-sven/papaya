@@ -4,7 +4,6 @@ import com.sunshine.papaya.util.ConstantUtil
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
-import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.reflect.MethodSignature
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -19,13 +18,12 @@ class LogFilter {
 
     @Around(ConstantUtil.CONTROLLER_ASPECT)
     fun printUrlLog(joinPoint: ProceedingJoinPoint): Any? {
-        var obj: Any? = null
         var args: Array<Any> = joinPoint.args
         var startTime = System.currentTimeMillis()
         var status = HttpStatus.OK.value()
 
         try {
-            obj = joinPoint.proceed(args)
+            var obj = joinPoint.proceed(args)
             return obj
         } catch (e: Throwable) {
             status = HttpStatus.INTERNAL_SERVER_ERROR.value()
@@ -50,12 +48,4 @@ class LogFilter {
         var diffTime = endTime - startTime
         logger.info("{} {} {}, {} {} ms", httpMethod, path, methodName, status, diffTime)
     }
-
-//    fun getResponseStatus(): Int {
-//        var attrs = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes
-//        var webRequest = ServletWebRequest(attrs.request)
-//        var ea =this.errorAttributes.getErrorAttributes(webRequest, false)
-//        var model = Collections.unmodifiableMap(ea)
-//        return model["status"] as Int
-//    }
 }
