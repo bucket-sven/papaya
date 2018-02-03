@@ -1,6 +1,8 @@
 package com.sunshine.papaya.bean
 
-class User {
+import java.io.Serializable
+
+class User : Serializable{
     var id: Long? = null
     var nickname: String? = null
 }
