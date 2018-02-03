@@ -31,7 +31,6 @@ class LogFilter {
         } finally {
             printLog(joinPoint, startTime, status)
         }
-        return null
     }
 
     private fun printLog(joinPoint: ProceedingJoinPoint, startTime: Long, status: Int) {
