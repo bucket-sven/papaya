@@ -19,6 +19,11 @@ interface UserDAO {
     @Delete("DELETE FROM $TABLE_NAME WHERE id = #{id}")
     fun delete(id: Long)
 
-    @Select("SELECT * FROM $TABLE_NAME WHERE id IN (#{ids})")
-    fun findByIds(ids: Array<Long>): Array<User>
+    @Select(
+            "<script>"
+            + "SELECT * FROM $TABLE_NAME WHERE id IN "
+            + "<foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'>" + "#{item}</foreach>"
+            + "</script>"
+    )
+    fun findByIds(@Param("ids") ids: Array<Long>): Array<User>
 }

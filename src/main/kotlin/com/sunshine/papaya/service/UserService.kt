@@ -21,4 +21,8 @@ class UserService {
     fun findUserById(id: Long): User? {
         return userDAO.findById(id)
     }
+
+    fun findUserByIds(ids: Array<Long>): Array<User> {
+        return userDAO.findByIds(ids)
+    }
 }

@@ -1,6 +1,5 @@
 package com.sunshine.papaya.controller
 
-import com.sunshine.papaya.dao.UserDAO
 import com.sunshine.papaya.service.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
