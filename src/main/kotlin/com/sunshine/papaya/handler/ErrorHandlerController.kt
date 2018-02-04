@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -34,7 +35,7 @@ class ErrorHandlerController(dea: DefaultErrorAttributes) : AbstractErrorControl
         var cause = getCause(request)
         var status = model["status"] as Int
         var message = model["message"] as String
-        var errorMessage = "Internal Server Error"
+        var errorMessage = HttpStatus.resolve(status).reasonPhrase
         response.status = status
         var view = "5xx"
         if (!isJsonRequest(request)) {
@@ -52,14 +53,14 @@ class ErrorHandlerController(dea: DefaultErrorAttributes) : AbstractErrorControl
         return view
     }
 
-    fun getCause(request: HttpServletRequest): Throwable {
+    fun getCause(request: HttpServletRequest): Throwable? {
         var error = request.getAttribute("javax.servlet.error.exception") as Throwable?
         if (error != null) {
             while (error is ServletException && error.cause != null) {
                 error = error.cause
             }
         }
-        return error!!
+        return error
     }
 
     fun isJsonRequest(request: HttpServletRequest): Boolean {
